@@ -86,3 +86,5 @@ mod integration_tests {
         assert!(matches!(result.unwrap_err(), MediTokenError::ApproveToZeroAddress));
     }
 }
+
+fn main() {}
