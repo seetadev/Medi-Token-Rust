@@ -1,5 +1,5 @@
 use medi_token::{MediToken, utils::Utils};
-// use std::collections::HashMap;
+use std::collections::HashMap;
 
 fn main() {
     println!(" Running MediToken Tests");
