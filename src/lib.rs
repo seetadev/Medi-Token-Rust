@@ -11,6 +11,7 @@ pub mod error;
 pub mod utils;
 pub mod deployment;
 pub mod abi;
+pub mod near_token;
 
 pub use token::MediToken;
 pub use error::MediTokenError;

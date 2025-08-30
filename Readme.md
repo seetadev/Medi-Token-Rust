@@ -6,6 +6,7 @@ A complete Rust implementation of the MediToken ERC20-like token for healthcare 
 
 - **Complete ERC20 Functionality**: Transfer, approve, allowances, and events
 - **Multi-Chain Support**: Deploy to Sepolia, Polygon Amoy, Arbitrum, Optimism, and more
+- **NEAR NEP-141 Support**: Deployable to the NEAR blockchain
 - **Type Safety**: Full Rust type safety with comprehensive error handling
 - **Testing Suite**: Extensive unit and integration tests
 - **Deployment Tools**: CLI tools for easy deployment and testing
@@ -111,6 +112,7 @@ medi-token-rust/
 │   ├── utils.rs            # Utility functions
 │   ├── abi.rs              # Contract ABI definitions
 │   ├── deployment.rs       # Deployment utilities
+│   ├── near_token.rs       # NEP-141 compliant token for NEAR
 │   └── bin/
 │       ├── deploy.rs       # Deployment CLI tool
 │       └── test_runner.rs  # Test runner binary
