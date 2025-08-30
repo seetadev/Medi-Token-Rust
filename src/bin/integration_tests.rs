@@ -87,4 +87,4 @@
         }
     }
 
-    fn main() {}
+fn main() {}
