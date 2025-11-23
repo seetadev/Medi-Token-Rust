@@ -6,12 +6,25 @@
 //! - Testing framework
 //! - Multi-chain support
 
-pub mod token;
-pub mod error;
-pub mod utils;
-pub mod deployment;
-pub mod abi;
+// NEAR token module - always included
 pub mod near_token;
+pub use near_token::MediTokenNEP141;
 
+// For non-WASM builds, include EVM/blockchain modules
+#[cfg(not(target_arch = "wasm32"))]
+pub mod token;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod error;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod utils;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod deployment;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod abi;
+
+#[cfg(not(target_arch = "wasm32"))]
 pub use token::MediToken;
+#[cfg(not(target_arch = "wasm32"))]
 pub use error::MediTokenError;
+#[cfg(not(target_arch = "wasm32"))]
+pub use utils::Utils;

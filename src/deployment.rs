@@ -1,3 +1,6 @@
+//! This module is not available for WASM targets
+#![cfg(not(target_arch = "wasm32"))]
+
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
