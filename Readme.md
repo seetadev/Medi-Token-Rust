@@ -6,11 +6,12 @@ A complete Rust implementation of the MediToken ERC20-like token for healthcare 
 
 - **Complete ERC20 Functionality**: Transfer, approve, allowances, and events
 - **Multi-Chain Support**: Deploy to Sepolia, Polygon Amoy, Arbitrum, Optimism, and more
-- **NEAR NEP-141 Support**: Deployable to the NEAR blockchain
+- **NEAR NEP-141 Support**: ✅ **Deployed to NEAR Testnet** (`harshitnayan.testnet`)
 - **Type Safety**: Full Rust type safety with comprehensive error handling
 - **Testing Suite**: Extensive unit and integration tests
 - **Deployment Tools**: CLI tools for easy deployment and testing
 - **Healthcare Focus**: Designed specifically for healthcare applications
+- **Cross-Chain Ready**: Foundation for Filecoin-NEAR bridge implementation
 
 ## 📋 Prerequisites
 
@@ -81,7 +82,9 @@ make clean
 
 ## 🚀 Deployment
 
-Deploy to different networks using the CLI tool:
+### EVM Networks
+
+Deploy to different EVM networks using the CLI tool:
 
 ```bash
 # Deploy to Sepolia testnet
@@ -101,6 +104,24 @@ make deploy NETWORK=cardona
 make deploy NETWORK=scroll
 ```
 
+### NEAR Protocol
+
+Build and deploy to NEAR testnet:
+
+```bash
+# Build NEAR contract with cargo-near
+make build-near
+
+# Deploy to NEAR testnet
+near contract deploy YOUR_ACCOUNT.testnet \
+  use-file near-contract/target/near/medi_token_near.wasm \
+  with-init-call new json-args '{"owner_id":"YOUR_ACCOUNT.testnet","total_supply":"1000000000000000000000000"}' \
+  prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' \
+  network-config testnet sign-with-keychain send
+```
+
+See [NEAR_CONTRACT_SETUP.md](./NEAR_CONTRACT_SETUP.md) for detailed instructions.
+
 ## 🏗️ Project Structure
 
 ```
@@ -112,15 +133,17 @@ medi-token-rust/
 │   ├── utils.rs            # Utility functions
 │   ├── abi.rs              # Contract ABI definitions
 │   ├── deployment.rs       # Deployment utilities
-│   ├── near_token.rs       # NEP-141 compliant token for NEAR
 │   └── bin/
 │       ├── deploy.rs       # Deployment CLI tool
 │       └── test_runner.rs  # Test runner binary
+├── near-contract/          # NEAR smart contract (cargo-near)
+│   ├── Cargo.toml          # NEAR-specific dependencies
+│   └── src/
+│       └── lib.rs          # NEP-141 fungible token
 ├── tests/
 │   └── integration_tests.rs # Integration tests
 ├── Cargo.toml              # Rust dependencies
 ├── Makefile               # Build automation
-├── .env.example           # Environment template
 └── README.md              # This file
 ```
 
@@ -211,6 +234,8 @@ cargo doc --open
 
 ## 🌐 Deployed Contract Addresses
 
+### EVM Networks
+
 | Network | Address |
 |---------|---------|
 | OP Sepolia | `0xc898870DF59123F346a0e3787966023e0ED78B93` |
@@ -219,6 +244,21 @@ cargo doc --open
 | Polygon Amoy | `0x7aD0A9dB054101be9428fa89bB1194506586D1aD` |
 | Polygon Cardona | `0x4216a9c6EB59FcA323169Ef3194783d3dC9b7F23` |
 | Scroll Sepolia | `0x6e650a339AbE4D9cf0aa8091fB2099284968beFf` |
+
+### NEAR Protocol
+
+| Network | Contract Account | Details |
+|---------|-----------------|---------|------|
+| NEAR Testnet | `harshitnayan.testnet` | [View on Explorer](https://explorer.testnet.near.org/accounts/harshitnayan.testnet) |
+
+**NEAR Deployment:**
+- **Latest TX**: [G3KGp8QTiS8sjubfPr4nJ8djQZ22i7GfWV72bQ2mXP5Q](https://explorer.testnet.near.org/transactions/G3KGp8QTiS8sjubfPr4nJ8djQZ22i7GfWV72bQ2mXP5Q)
+- **Total Supply**: 1,000,000 MEDT
+- **Standard**: NEP-141 (Fungible Token)
+- **Build Tool**: cargo-near 0.9.0
+
+📖 **See [NEAR_DEPLOYMENT.md](./NEAR_DEPLOYMENT.md) for usage examples**  
+🔧 **See [NEAR_CONTRACT_SETUP.md](./NEAR_CONTRACT_SETUP.md) for build & deploy instructions**
 
 ## 🤝 Contributing
 

@@ -1,3 +1,5 @@
+//! This module is not available for WASM targets
+#![cfg(not(target_arch = "wasm32"))]
 
 use crate::error::{MediTokenError, Result};
 use k256::ecdsa::{SigningKey, VerifyingKey};

@@ -1,6 +1,9 @@
 // Author Name - Ritankar Saha
 // Email - ritankar.saha786@gmail.com
 
+//! This module is not available for WASM targets
+#![cfg(not(target_arch = "wasm32"))]
+
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use crate::error::{MediTokenError, Result};

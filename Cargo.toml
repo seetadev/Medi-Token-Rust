@@ -10,38 +10,49 @@ repository = "https://github.com/ritankarsaha/Medi-Token-Rust"
 [lib]
 name = "medi_token"
 path = "src/lib.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 serde = { version = "1.0.193", features = ["derive"] }
 serde_json = "1.0.108"
-tokio = { version = "1.35", features = ["full"] }
+tokio = { version = "1.35", features = ["full"], optional = true }
 anyhow = "1.0.75"
 thiserror = "1.0.50"
-hex = "0.4.3"
-sha3 = "0.10.8"
-k256 = { version = "0.13.3", features = ["ecdsa", "std"] }
-rand = "0.8.5"
-clap = { version = "4.4.11", features = ["derive"] }
-dotenv = "0.15.0"
+hex = { version = "0.4.3", optional = true }
+sha3 = { version = "0.10.8", optional = true }
+k256 = { version = "0.13.3", features = ["ecdsa", "std"], optional = true }
+rand = { version = "0.8.5", optional = true }
+clap = { version = "4.4.11", features = ["derive"], optional = true }
+dotenv = { version = "0.15.0", optional = true }
 reqwest = { version = "0.11.22", features = ["json"], optional = true }
 ethers = { version = "1.0", features = ["rustls", "ws"], optional = true }
 web3 = { version = "0.18", optional = true }
-near-sdk = { version = "5.17.1", features = ["unit-testing"] }
-near-contract-standards = { version = "5.17.1" }
+near-sdk = "5.5.0"
+near-contract-standards = "5.5.0"
+borsh = "1.5.1"
 
 [dev-dependencies]
 assert_matches = "1.5.0"
 
+[profile.release]
+codegen-units = 1
+opt-level = "z"
+lto = true
+debug = false
+panic = "abort"
+overflow-checks = true
+
 [features]
 default = []
-networking = ["reqwest"]
-blockchain = ["reqwest"]
-
-[[bin]]
-name = "deploy"
-path = "src/bin/deploy.rs"
+networking = ["reqwest", "tokio"]
+blockchain = ["reqwest", "k256", "rand", "clap", "tokio", "hex", "sha3", "dotenv"]
 
 [[bin]]
 name = "test_runner"
 path = "src/bin/test_runner.rs"
+required-features = ["blockchain"]
+
+[[bin]]
+name = "integration_tests"
+path = "src/bin/integration_tests.rs"
+required-features = ["blockchain"]

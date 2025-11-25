@@ -16,6 +16,9 @@ help:
 	@echo "  clean        Clean build artifacts"
 	@echo "  run          Run the test suite"
 	@echo "  deploy       Deploy to specified network"
+	@echo "  deploy-near  Build and show NEAR deployment instructions"
+	@echo "  build-near   Build NEAR contract"
+	@echo "  test-near    Test NEAR contract"
 	@echo "  fmt          Format code"
 	@echo "  clippy       Run clippy linter"
 	@echo "  doc          Generate documentation"
@@ -25,6 +28,7 @@ help:
 	@echo "  make deploy NETWORK=sepolia"
 	@echo "  make deploy NETWORK=arbitrum"
 	@echo "  make deploy NETWORK=optimism"
+	@echo "  make deploy-near"
 
 # Build the project
 build:
@@ -83,6 +87,22 @@ setup: install
 	@echo "Setting up development environment..."
 	@cp .env.example .env
 	@echo "Please configure your .env file with appropriate values"
+
+# NEAR blockchain deployment
+deploy-near: build-near
+	@echo ""
+	@echo "To deploy, run:"
+	@echo "  near contract deploy YOUR_ACCOUNT.testnet use-file near-contract/target/wasm32-unknown-unknown/release/medi_token_near.wasm with-init-call new json-args '{\"owner_id\":\"YOUR_ACCOUNT.testnet\",\"total_supply\":\"1000000000000000000000000\"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' network-config testnet sign-with-keychain send"
+
+# Build NEAR contract only
+build-near:
+	@echo "Building NEAR contract with cargo-near..."
+	cd near-contract && cargo near build
+	@echo "NEAR contract built: near-contract/target/wasm32-unknown-unknown/release/medi_token_near.wasm"
+
+# Test NEAR contract
+test-near:
+	cd near-contract && cargo test
 
 # All-in-one development command
 dev: fmt clippy test
