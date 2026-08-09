@@ -1,14 +1,20 @@
 use near_contract_standards::fungible_token::core::FungibleTokenCore;
 use near_contract_standards::fungible_token::FungibleTokenResolver;
-use near_contract_standards::fungible_token::metadata::{FungibleTokenMetadata, FungibleTokenMetadataProvider, FT_METADATA_SPEC};
+use near_contract_standards::fungible_token::metadata::{
+    FungibleTokenMetadata, FungibleTokenMetadataProvider, FT_METADATA_SPEC,
+};
 use near_contract_standards::fungible_token::FungibleToken;
-use near_contract_standards::storage_management::{StorageManagement, StorageBalance, StorageBalanceBounds};
-use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{near_bindgen, AccountId, NearToken, PanicOnDefault, PromiseOrValue};
+use near_contract_standards::storage_management::{
+    StorageBalance, StorageBalanceBounds, StorageManagement,
+};
+use near_sdk::{near, near_bindgen, AccountId, NearToken, PanicOnDefault, PromiseOrValue};
 use near_sdk::json_types::U128;
 
-#[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
+// near-sdk 5.x: use #[near(contract_state)] on the struct instead of
+// #[near_bindgen] + #[derive(BorshDeserialize, BorshSerialize)].
+// The macro handles borsh serialization and ContractState automatically.
+#[near(contract_state)]
+#[derive(PanicOnDefault)]
 pub struct MediTokenNEP141 {
     token: FungibleToken,
     metadata: FungibleTokenMetadata,
@@ -66,7 +72,12 @@ impl FungibleTokenCore for MediTokenNEP141 {
 #[near_bindgen]
 impl FungibleTokenResolver for MediTokenNEP141 {
     #[private]
-    fn ft_resolve_transfer(&mut self, owner_id: AccountId, receiver_id: AccountId, amount: U128) -> U128 {
+    fn ft_resolve_transfer(
+        &mut self,
+        owner_id: AccountId,
+        receiver_id: AccountId,
+        amount: U128,
+    ) -> U128 {
         self.token.ft_resolve_transfer(owner_id, receiver_id, amount)
     }
 }
